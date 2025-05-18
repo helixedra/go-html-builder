@@ -14,34 +14,30 @@ func getPart(part string) string {
 	return string(file)
 }
 
-func main() {
+func Build() {
 	index, err := os.ReadFile("html/index.html")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// fmt.Println(string(index))
-
 	indexString := string(index)
-
 	reg := regexp.MustCompile(`@@\w+`)
-
 	matches := reg.FindAllString(indexString, -1)
 
-	// fmt.Println(matches)
-
-	// Build final
 	output := indexString
-
 	for _, part := range matches {
 		compiledPart := getPart(part)
 		output = strings.ReplaceAll(output, part, compiledPart)
 	}
 
-	fmt.Print(output)
+	// fmt.Print(output)
+	fmt.Println("Files builded...")
 
-	wErr := os.WriteFile("./out/index.html", []byte(output), 755)
+	wErr := os.WriteFile("./out/index.html", []byte(output), 0755)
 	if wErr != nil {
 		log.Fatal(wErr)
 	}
+}
+func main() {
+	Build()
 }
